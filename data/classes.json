@@ -1,0 +1,30 @@
+{
+  "warrior": {
+    "name": "Warrior",
+    "health": 140,
+    "mana": 35,
+    "damage": 18,
+    "speed": 175
+  },
+  "ranger": {
+    "name": "Ranger",
+    "health": 95,
+    "mana": 65,
+    "damage": 15,
+    "speed": 205
+  },
+  "mage": {
+    "name": "Mage",
+    "health": 80,
+    "mana": 130,
+    "damage": 22,
+    "speed": 165
+  },
+  "rogue": {
+    "name": "Rogue",
+    "health": 90,
+    "mana": 50,
+    "damage": 17,
+    "speed": 225
+  }
+}

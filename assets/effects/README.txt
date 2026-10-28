@@ -1,0 +1,1 @@
+Target for transparent sprite sheets: attacks, impact, loot, level-up and gathering effects.

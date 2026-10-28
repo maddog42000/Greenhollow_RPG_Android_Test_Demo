@@ -1,0 +1,9 @@
+[
+  {
+    "id": "first_steps",
+    "title": "A Quieting Forest",
+    "objective": "Defeat three creatures",
+    "reward_xp": 60,
+    "reward_gold": 30
+  }
+]

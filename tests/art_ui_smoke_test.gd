@@ -1,0 +1,80 @@
+extends SceneTree
+
+func _initialize():
+ call_deferred("_run")
+
+func _run():
+ var game = load("res://scenes/main.tscn").instantiate()
+ root.add_child(game)
+ await process_frame
+ var classes = ["warrior", "ranger", "mage", "rogue"]
+ var atlas_texture:Texture2D=load("res://assets/user_art/greenhollow_sprite_atlas.png")
+ var atlas:Image=atlas_texture.get_image()
+ for hero_class in classes:
+  game.set("hero_class", hero_class)
+  assert(game.call("_skill_icon_key") == hero_class, "Wrong signature icon selected for " + hero_class)
+  assert(game.call("_skill_description") != "", "Missing skill description for " + hero_class)
+  assert(game.call("_class_skill_name") != "", "Missing skill name for " + hero_class)
+  for frame in range(4):
+   var walk_rect:Rect2=game.call("_character_frame_rect",hero_class,frame,false)
+   var attack_rect:Rect2=game.call("_character_frame_rect",hero_class,frame,true)
+   var walk_frame:Image=atlas.get_region(Rect2i(Vector2i(walk_rect.position),Vector2i(walk_rect.size)))
+   var attack_frame:Image=atlas.get_region(Rect2i(Vector2i(attack_rect.position),Vector2i(attack_rect.size)))
+   assert(walk_frame.get_used_rect().size!=Vector2i.ZERO,"Empty walk frame: %s/%d" % [hero_class,frame])
+   assert(attack_frame.get_used_rect().size!=Vector2i.ZERO,"Empty attack frame: %s/%d" % [hero_class,frame])
+ game.set("hero_class", "ranger")
+ game.set("level", 1)
+ game.set("xp", game.get("xp_next"))
+ game.set("skill_points", 0)
+ game.set("levelup_time", 0.0)
+ game.set("screen", "game")
+ game.call("_level_check")
+ assert(game.get("level") == 2, "XP threshold should award a level")
+ assert(game.get("skill_points") == 1, "Level-up should award a skill point")
+ assert(game.get("screen") == "level_up", "Level-up must pause for a card choice")
+ var offers:Array=game.get("levelup_options")
+ assert(offers.size()==3,"Level-up must show exactly three offers")
+ var offered_ids:Array=[]
+ for offer in offers: offered_ids.append(str(offer["id"]))
+ offered_ids.sort()
+ assert(offered_ids.size()==3 and offered_ids[0]!=offered_ids[1] and offered_ids[1]!=offered_ids[2],"The three offers must be distinct")
+ var catalog=load("res://scripts/upgrade_catalog.gd").new()
+ var first_card:Rect2=game.call("_levelup_card_rect",0)
+ # Keep the randomly rolled three-card screen assertion above, then exercise
+ # the class ability in isolation without assuming it appears in every roll.
+ var ability_card:Dictionary=catalog.get_card("ranger_volley")
+ var ability_options:Array[Dictionary]=[ability_card]
+ game.set("levelup_options",ability_options)
+ game.call("_tap",first_card.get_center())
+ assert(game.get("screen")=="game","Choosing an ability card should resume the game")
+ var slots:Array=game.get("attack_slots")
+ assert(slots.size()==1 and slots[0]=="Volley","The ranger ability should appear in the hotbar")
+ game.set("mp",100)
+ game.call("_spawn","bandit",game.get("hero")+Vector2(70,0))
+ game.set("encounter_active",true)
+ var before_hp:int=int(game.get("enemies")[0]["hp"])
+ var before_mp:int=int(game.get("mp"))
+ var first_attack_button:Rect2=game.call("_attack_slot_rect",0)
+ game.call("_tap",first_attack_button.get_center())
+ var enemies:Array=game.get("enemies")
+ assert(enemies.is_empty() or int(enemies[0]["hp"])<before_hp,"Selected attack should damage an enemy")
+ assert(int(game.get("mp"))<before_mp,"Using the active attack should spend MP")
+ assert(float(game.get("attack_cooldowns")["Volley"])>0.0,"Using the active attack should start its cooldown")
+ var full_slots:Array[String]=game.get("attack_slots")
+ for attack_name in ["Whirlwind","Volley","Arcane Burst","Shadow Strike"]:
+  if full_slots.size()<3 and not full_slots.has(attack_name): full_slots.append(attack_name)
+ game.set("attack_slots",full_slots)
+ var upgrade_offers:Array=game.call("_roll_levelup_options")
+ assert(upgrade_offers.size()==3,"Full hotbar should still show three choices")
+ for offer in upgrade_offers: assert(not bool(offer.get("active",false)),"Full hotbar should offer passives, not an occupied ability")
+ var upgraded_id:String=str(upgrade_offers[0]["id"])
+ var old_rank:int=int(game.get("upgrade_ranks").get(upgraded_id,0))
+ var passive_options:Array[Dictionary]=[upgrade_offers[0]]
+ game.set("levelup_options",passive_options)
+ game.set("pending_levelup_count",1)
+ game.set("levelup_return_screen","game")
+ game.set("screen","level_up")
+ game.call("_choose_levelup",0)
+ assert(int(game.get("upgrade_ranks")[upgraded_id])==old_rank+1,"Selecting a passive should raise its card rank")
+ print("ART_LEVELUP_ACTIVE_ATTACK_TEST=PASS")
+ quit()

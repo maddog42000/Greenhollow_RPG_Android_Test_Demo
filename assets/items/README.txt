@@ -1,0 +1,1 @@
+Target for transparent 32x32 and 64x64 item icons.

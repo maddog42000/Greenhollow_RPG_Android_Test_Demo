@@ -1,0 +1,7 @@
+{
+  "xp_base": 50,
+  "xp_growth": 1.35,
+  "movement_directions": 8,
+  "camera": "three-quarter",
+  "target": "Android"
+}

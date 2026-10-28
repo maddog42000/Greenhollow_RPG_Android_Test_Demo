@@ -1,0 +1,85 @@
+{
+  "project": "Greenhollow RPG",
+  "godot_target": "4.7.2 stable",
+  "art_direction": "Original hybrid pixel art, three-quarter top-down, 8-direction character sprite sheets",
+  "assets": {
+    "player_spritesheets": [
+      "assets/characters/warrior/warrior_walk.png",
+      "assets/characters/ranger/ranger_walk.png",
+      "assets/characters/mage/mage_walk.png",
+      "assets/characters/rogue/rogue_walk.png"
+    ],
+    "player_portraits": [
+      "assets/characters/warrior/warrior_portrait.png",
+      "assets/characters/ranger/ranger_portrait.png",
+      "assets/characters/mage/mage_portrait.png",
+      "assets/characters/rogue/rogue_portrait.png"
+    ],
+    "world_tiles": [
+      "assets/world/grass.png",
+      "assets/world/dirt.png",
+      "assets/world/stone.png"
+    ],
+    "world_props": [
+      "assets/world/tree.png",
+      "assets/world/house.png"
+    ],
+    "skill_icons": [
+      "assets/skills/whirlwind.png",
+      "assets/skills/volley.png",
+      "assets/skills/arcane_burst.png",
+      "assets/skills/shadow_strike.png"
+    ],
+    "enemies": [
+      "assets/enemies/slime.png",
+      "assets/enemies/wolf.png",
+      "assets/enemies/bandit.png"
+    ]
+  },
+  "sprite_sheet_layout": {
+    "frame_width": 64,
+    "frame_height": 80,
+    "columns": 4,
+    "rows": 8,
+    "row_order": [
+      "south",
+      "south_west",
+      "west",
+      "north_west",
+      "north",
+      "north_east",
+      "east",
+      "south_east"
+    ],
+    "columns_use": "idle/walk cycle frames 0-3"
+  },
+  "original_art_pass": {
+    "atlas": "assets/original_art_pass/greenhollow_original_atlas.png",
+    "provenance": "Generated specifically for Greenhollow; transparent crops extracted into project assets",
+    "third_party_assets_bundled": false,
+    "notes": "Prototype directional sheets are derived/mirrored frame variants, not final hand-drawn eight-direction animation."
+  },
+  "overworld_art_pass": {
+    "terrain_tiles": [
+      "assets/world/grass.png",
+      "assets/world/dirt.png",
+      "assets/world/cobble.png",
+      "assets/world/moss.png",
+      "assets/world/sand.png"
+    ],
+    "props": [
+      "assets/original_art_pass/cottage.png",
+      "assets/original_art_pass/manor.png",
+      "assets/original_art_pass/market_stall.png",
+      "assets/original_art_pass/well.png",
+      "assets/original_art_pass/campfire.png",
+      "assets/original_art_pass/ruin_arch.png"
+    ],
+    "tree_variants": [
+      "assets/original_art_pass/oak_tree.png",
+      "assets/original_art_pass/pine_tree.png",
+      "assets/original_art_pass/autumn_tree.png"
+    ],
+    "status": "integrated into main.gd draw renderer; runtime verification pending"
+  }
+}

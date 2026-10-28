@@ -1,0 +1,22 @@
+[
+  {
+    "id": "power_strike",
+    "class": "warrior",
+    "level": 2
+  },
+  {
+    "id": "piercing_shot",
+    "class": "ranger",
+    "level": 2
+  },
+  {
+    "id": "arc_burst",
+    "class": "mage",
+    "level": 2
+  },
+  {
+    "id": "shadow_flurry",
+    "class": "rogue",
+    "level": 2
+  }
+]
